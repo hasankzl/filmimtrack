@@ -14,6 +14,8 @@ import {
   onAuthStateChanged,
 } from "firebase/auth";
 import { useNavigation } from "@react-navigation/core";
+
+import { Button } from "react-native-paper";
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -37,7 +39,7 @@ const LoginScreen = () => {
   };
 
   const handleLogin = () => {
-    signInWithEmailAndPassword(email.password)
+    signInWithEmailAndPassword(auth, email, password)
       .then((userCredentials) => {
         const user = userCredentials.user;
         console.log("logged in");
@@ -46,7 +48,7 @@ const LoginScreen = () => {
       .catch((error) => alert(error.message));
   };
   return (
-    <KeyboardAvoidingView style={styles.container} behavior="padding">
+    <KeyboardAvoidingView style={styles.container}>
       <View style={styles.inputContainer}>
         <TextInput
           placeholder="Email"
@@ -64,15 +66,15 @@ const LoginScreen = () => {
       </View>
 
       <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={handleLogin} style={[styles.button]}>
+        <Button onPress={handleLogin} style={[styles.button]}>
           <Text style={styles.buttonText}>Login</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
+        </Button>
+        <Button
           onPress={handleSignUp}
           style={[styles.button, styles.buttonOutline]}
         >
           <Text style={styles.buttonOutlineText}>Register</Text>
-        </TouchableOpacity>
+        </Button>
       </View>
     </KeyboardAvoidingView>
   );
@@ -104,9 +106,6 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: "#0782F9",
-    width: "100%",
-    padding: 15,
-    borderRadius: 10,
   },
   buttonOutline: {
     backgroundColor: "white",
