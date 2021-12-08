@@ -19,9 +19,9 @@ const StackHeader = () => {
   return (
     <Appbar.Header>
       <Appbar.Content title="filmtrack" />
+      <Text style={{ color: "white" }}>{auth.currentUser?.email} </Text>
 
       <Appbar.Action icon="logout" onPress={handleSignOut} />
-      <Text>{auth.currentUser?.email} </Text>
     </Appbar.Header>
   );
 };
