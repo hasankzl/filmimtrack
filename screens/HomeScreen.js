@@ -1,47 +1,80 @@
 import { signOut } from "@firebase/auth";
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, ScrollView } from "react-native";
-import { getMostPopularMovies } from "../api/Index";
-import { auth } from "../firebase";
-import { Avatar, Button, Card, Title, Paragraph } from "react-native-paper";
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  View,
+} from "react-native";
+import { getMostPopularMovies, searchMovieByName } from "../api/Index";
+import { Button, Card, Title, Paragraph, Searchbar } from "react-native-paper";
 const HomeScreen = () => {
   const [movies, setMovies] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(async () => {
     const data = await getMostPopularMovies();
     console.log(data[1]);
     setMovies(data);
   }, []);
+
+  const HandleSearch = async (q) => {
+    setSearchQuery(q);
+    const data = await searchMovieByName(q);
+    console.log(data[1]);
+    setMovies(data);
+  };
   return (
-    <ScrollView style={styles.container}>
-      {movies.map((movie) => {
-        return (
-          <Card>
-            <Card.Content>
-              <Title>{movie.title}</Title>
-              <Paragraph>{movie.overview}</Paragraph>
-            </Card.Content>
-            <Card.Cover
-              source={{
-                uri: "https://image.tmdb.org/t/p/w1280/" + movie.poster_path,
-              }}
-            />
-            <Card.Actions>
-              <Button>İncele</Button>
-            </Card.Actions>
-          </Card>
-        );
-      })}
-    </ScrollView>
+    <View>
+      <Searchbar
+        placeholder="Search"
+        onChangeText={HandleSearch}
+        value={searchQuery}
+      />
+      <ScrollView style={styles.container}>
+        {movies.map((movie) => {
+          return (
+            <Card style={styles.card}>
+              <Card.Content>
+                <Title>{movie.title}</Title>
+                <Paragraph style={styles.paragraph}>{movie.overview}</Paragraph>
+              </Card.Content>
+              <Card.Cover
+                style={styles.image}
+                source={{
+                  uri: "https://image.tmdb.org/t/p/w1280/" + movie.poster_path,
+                }}
+              />
+              <Card.Actions>
+                <Button>İncele</Button>
+              </Card.Actions>
+            </Card>
+          );
+        })}
+      </ScrollView>
+    </View>
   );
 };
 
 export default HomeScreen;
 
 const styles = StyleSheet.create({
+  paragraph: {
+    height: 100,
+  },
+  image: {
+    flex: 1,
+    width: "100%",
+    height: "100%",
+    resizeMode: "contain",
+  },
+  card: {
+    height: 500,
+  },
   button: {
     backgroundColor: "#0782F9",
-    width: "100%",
+    width: "50%",
     padding: 15,
     borderRadius: 10,
   },
