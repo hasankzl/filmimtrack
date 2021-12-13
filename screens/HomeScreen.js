@@ -7,7 +7,13 @@ import {
   ScrollView,
   View,
 } from "react-native";
-import { getMostPopularMovies, searchMovieByName } from "../api/Index";
+import {
+  getMostPopularMovies,
+  searchMovieByName,
+  addMovie,
+  getMoviesByUser,
+} from "../api/Index";
+import { auth } from "../firebase";
 import { Button, Card, Title, Paragraph, Searchbar } from "react-native-paper";
 const HomeScreen = () => {
   const [movies, setMovies] = useState([]);
@@ -15,8 +21,9 @@ const HomeScreen = () => {
 
   useEffect(async () => {
     const data = await getMostPopularMovies();
-    console.log(data[1]);
     setMovies(data);
+    const d = await getMoviesByUser(auth.currentUser.uid);
+    console.log(d);
   }, []);
 
   const HandleSearch = async (q) => {
@@ -35,7 +42,7 @@ const HomeScreen = () => {
       <ScrollView style={styles.container}>
         {movies.map((movie) => {
           return (
-            <Card style={styles.card}>
+            <Card style={styles.card} key={movie.title}>
               <Card.Content>
                 <Title>{movie.title}</Title>
                 <Paragraph style={styles.paragraph}>{movie.overview}</Paragraph>
@@ -48,6 +55,9 @@ const HomeScreen = () => {
               />
               <Card.Actions>
                 <Button>İncele</Button>
+                <Button onPress={() => addMovie(auth.currentUser.uid, movie)}>
+                  Listeme Ekle
+                </Button>
               </Card.Actions>
             </Card>
           );
