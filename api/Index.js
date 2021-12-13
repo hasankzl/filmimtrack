@@ -7,6 +7,8 @@ import {
   where,
   getDocs,
   query,
+  deleteDoc,
+  doc,
 } from "firebase/firestore/lite";
 export const getMostPopularMovies = async () => {
   const data = await axios
@@ -36,14 +38,21 @@ export const addMovie = async (userId, movie) => {
     console.error("Error adding document: ", e);
   }
 };
-
+export const deleteMovie = async (id) => {
+  const movieDoc = doc(db, "Movie", id);
+  console.log(id);
+  await deleteDoc(movieDoc);
+};
 export const getMoviesByUser = async (userId) => {
   const q = query(collection(db, "Movie"), where("userId", "==", userId));
   const querySnapshot = await getDocs(q);
   const list = [];
   querySnapshot.forEach((doc) => {
     // doc.data() is never undefined for query doc snapshots
-    list.push(doc.data());
+    list.push({
+      id: doc.id,
+      ...doc.data(),
+    });
   });
   return list;
 };

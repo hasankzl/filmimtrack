@@ -11,6 +11,7 @@ import {
   getMostPopularMovies,
   searchMovieByName,
   addMovie,
+  deleteMovie,
   getMoviesByUser,
 } from "../api/Index";
 import { auth } from "../firebase";
@@ -18,12 +19,12 @@ import { Button, Card, Title, Paragraph, Searchbar } from "react-native-paper";
 const HomeScreen = () => {
   const [movies, setMovies] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-
+  const [myMovieList, setMyMovieList] = useState([]);
   useEffect(async () => {
     const data = await getMostPopularMovies();
     setMovies(data);
     const d = await getMoviesByUser(auth.currentUser.uid);
-    console.log(d);
+    setMyMovieList(d);
   }, []);
 
   const HandleSearch = async (q) => {
@@ -31,6 +32,18 @@ const HomeScreen = () => {
     const data = await searchMovieByName(q);
     console.log(data[1]);
     setMovies(data);
+  };
+
+  const add = async (movie) => {
+    await addMovie(auth.currentUser.uid, movie);
+    const d = await getMoviesByUser(auth.currentUser.uid);
+    setMyMovieList(d);
+  };
+
+  const remove = async (id) => {
+    await deleteMovie(id);
+    const d = await getMoviesByUser(auth.currentUser.uid);
+    setMyMovieList(d);
   };
   return (
     <View>
@@ -41,6 +54,10 @@ const HomeScreen = () => {
       />
       <ScrollView style={styles.container}>
         {movies.map((movie) => {
+          const isSelected = myMovieList.find(
+            (selected) => selected.title === movie.title
+          );
+          console.log(isSelected);
           return (
             <Card style={styles.card} key={movie.title}>
               <Card.Content>
@@ -55,9 +72,13 @@ const HomeScreen = () => {
               />
               <Card.Actions>
                 <Button>İncele</Button>
-                <Button onPress={() => addMovie(auth.currentUser.uid, movie)}>
-                  Listeme Ekle
-                </Button>
+                {isSelected ? (
+                  <Button onPress={() => remove(isSelected.id)}>
+                    Bu film listenizde bulunmaktadır, silmek için tıklayınız
+                  </Button>
+                ) : (
+                  <Button onPress={() => add(movie)}>Listeme Ekle</Button>
+                )}
               </Card.Actions>
             </Card>
           );
