@@ -33,7 +33,6 @@ const LoginScreen = () => {
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredentials) => {
         const user = userCredentials.user;
-        console.log(user);
       })
       .catch((error) => alert(error.message));
   };
@@ -42,8 +41,6 @@ const LoginScreen = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredentials) => {
         const user = userCredentials.user;
-        console.log("logged in");
-        console.log(user);
       })
       .catch((error) => alert(error.message));
   };

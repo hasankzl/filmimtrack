@@ -27,20 +27,22 @@ export const searchMovieByName = async (query) => {
 };
 
 export const addMovie = async (userId, movie) => {
+  let id = "";
   try {
     const docRef = await addDoc(collection(db, "Movie"), {
       title: movie.title,
       img: movie.poster_path,
       userId,
     });
-    console.log("Document written with ID: ", docRef.id);
+    id = docRef.id;
   } catch (e) {
     console.error("Error adding document: ", e);
   }
+
+  return id;
 };
 export const deleteMovie = async (id) => {
   const movieDoc = doc(db, "Movie", id);
-  console.log(id);
   await deleteDoc(movieDoc);
 };
 export const getMoviesByUser = async (userId) => {

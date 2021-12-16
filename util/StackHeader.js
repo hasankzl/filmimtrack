@@ -18,8 +18,16 @@ const StackHeader = () => {
 
   return (
     <Appbar.Header>
-      <Appbar.Content title="filmtrack" />
-      <Text style={{ color: "white" }}>{auth.currentUser?.email} </Text>
+      <Appbar.Content
+        onPress={() => navigation.navigate("Home")}
+        title="filmimTrack"
+      />
+      <Text
+        style={{ color: "white", fontSize: 20, marginRight: 20 }}
+        onPress={() => navigation.navigate("Profile")}
+      >
+        Profile
+      </Text>
 
       <Appbar.Action icon="logout" onPress={handleSignOut} />
     </Appbar.Header>

@@ -1,12 +1,6 @@
 import { signOut } from "@firebase/auth";
 import React, { useEffect, useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-  View,
-} from "react-native";
+import { StyleSheet, ScrollView, View, Text } from "react-native";
 import {
   getMostPopularMovies,
   searchMovieByName,
@@ -16,8 +10,7 @@ import {
 } from "../api/Index";
 import { auth } from "../firebase";
 import { Button, Card, Title, Paragraph, Searchbar } from "react-native-paper";
-import inceleScreen from "./incele";
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
   const [movies, setMovies] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [myMovieList, setMyMovieList] = useState([]);
@@ -29,10 +22,15 @@ const HomeScreen = () => {
   }, []);
 
   const HandleSearch = async (q) => {
-    setSearchQuery(q);
-    const data = await searchMovieByName(q);
-    console.log(data[1]);
-    setMovies(data);
+    if (q == "") {
+      setSearchQuery(q);
+      const data = await getMostPopularMovies();
+      setMovies(data);
+    } else {
+      setSearchQuery(q);
+      const data = await searchMovieByName(q);
+      setMovies(data);
+    }
   };
 
   const add = async (movie) => {
@@ -58,24 +56,38 @@ const HomeScreen = () => {
           const isSelected = myMovieList.find(
             (selected) => selected.title === movie.title
           );
-          console.log(isSelected);
           return (
             <Card style={styles.card} key={movie.title}>
               <Card.Content>
-                <Title>{movie.title}</Title>
-                <Paragraph style={styles.paragraph}>{movie.overview}</Paragraph>
+                <Title style={{ textAlign: "center" }}>{movie.title}</Title>
+                <Text></Text>
+                <Text>Puan : {movie.vote_average}</Text>
+                <Text></Text>
+
+                <Text>Çıkış Tarihi : {movie.release_date}</Text>
+                <Text></Text>
               </Card.Content>
               <Card.Cover
+                resizeMode="stretch"
                 style={styles.image}
                 source={{
-                  uri: "https://image.tmdb.org/t/p/w1280/" + movie.poster_path,
+                  uri: "https://image.tmdb.org/t/p/w780/" + movie.poster_path,
                 }}
               />
               <Card.Actions>
-                <Button onPress={() => inceleScreen(movie.title,"https://image.tmdb.org/t/p/w1280/" + movie.poster_path,movie.overview)}>İNCELE</Button>
+                <Button
+                  onPress={() =>
+                    navigation.navigate("Review", {
+                      movie,
+                      isSelected,
+                    })
+                  }
+                >
+                  INCELE
+                </Button>
                 {isSelected ? (
                   <Button onPress={() => remove(isSelected.id)}>
-                    Bu film listenizde bulunmaktadır, silmek için tıklayınız
+                    Listede bulunuyor
                   </Button>
                 ) : (
                   <Button onPress={() => add(movie)}>Listeme Ekle</Button>
@@ -96,13 +108,17 @@ const styles = StyleSheet.create({
     height: 100,
   },
   image: {
-    flex: 1,
+    alignSelf: "center",
+    height: 400,
     width: "100%",
-    height: "100%",
-    resizeMode: "contain",
+    borderWidth: 1,
+    margin: 10,
   },
   card: {
-    height: 500,
+    height: 620,
+    borderWidth: 1,
+    borderStyle: "dashed",
+    margin: 8,
   },
   button: {
     backgroundColor: "#0782F9",
