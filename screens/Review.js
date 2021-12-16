@@ -5,13 +5,13 @@ import { addMovie, deleteMovie } from "../api/Index";
 import { auth } from "../firebase";
 const Review = ({ route }) => {
   const movie = route.params.movie;
-
-  const [addedMovieId, setAddedMovieId] = useState(route.params.isSelected);
+  const selected = route.params.isSelected;
+  const d = selected ? selected.id : null;
+  const [addedMovieId, setAddedMovieId] = useState(d);
   const add = async (movie) => {
     const id = await addMovie(auth.currentUser.uid, movie);
-    setAddedMovieId(addedMovieId);
+    setAddedMovieId(id);
   };
-
   const remove = async (id) => {
     await deleteMovie(id);
     setAddedMovieId(null);
@@ -19,6 +19,15 @@ const Review = ({ route }) => {
   return (
     <View>
       <ScrollView style={styles.container}>
+        {addedMovieId ? (
+          <Button onPress={() => remove(addedMovieId)}>
+            Listede bulunuyor
+          </Button>
+        ) : (
+          <Button onPress={() => add(movie)}>
+            Listeme Ekle {addedMovieId}
+          </Button>
+        )}
         <Card style={styles.card}>
           <Card.Content>
             <Title style={{ textAlign: "center" }}>{movie.title}</Title>
@@ -42,7 +51,9 @@ const Review = ({ route }) => {
                 Listede bulunuyor
               </Button>
             ) : (
-              <Button onPress={() => add(movie)}>Listeme Ekle</Button>
+              <Button onPress={() => add(movie)}>
+                Listeme Ekle {addedMovieId}
+              </Button>
             )}
           </Card.Actions>
         </Card>
@@ -61,7 +72,7 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
   },
   card: {
-    height: 1000,
+    height: 800,
   },
   button: {
     backgroundColor: "#0782F9",

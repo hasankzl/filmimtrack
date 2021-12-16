@@ -20,20 +20,15 @@ const ProfileScreen = () => {
     setMovies(data);
   };
   return (
-    <View>
+    <View style={{ marginBottom: 50 }}>
+      <Text style={{ textAlign: "center", padding: 10 }}>
+        {auth.currentUser?.email}
+      </Text>
       <ScrollView>
         {movies.map((m) => (
           <Card key={m.title}>
             <Card.Title>{m.title}</Card.Title>
-            <Button
-              buttonStyle={{
-                borderRadius: 0,
-                marginLeft: 0,
-                marginRight: 0,
-                marginBottom: 0,
-              }}
-              title="Incele"
-            />
+
             <Card.Divider />
             <Card.Image
               source={{
@@ -44,6 +39,7 @@ const ProfileScreen = () => {
             <Card.Divider />
             <Button
               buttonStyle={{
+                backgroundColor: "#6617f6",
                 borderRadius: 0,
                 marginLeft: 0,
                 marginRight: 0,

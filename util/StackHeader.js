@@ -11,7 +11,7 @@ const StackHeader = () => {
   const handleSignOut = () => {
     signOut(auth)
       .then(() => {
-        navigation.replace("Login");
+        navigation.navigate("Login");
       })
       .catch((err) => alert(err.message));
   };
