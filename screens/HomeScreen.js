@@ -16,6 +16,7 @@ import {
 } from "../api/Index";
 import { auth } from "../firebase";
 import { Button, Card, Title, Paragraph, Searchbar } from "react-native-paper";
+import inceleScreen from "./incele";
 const HomeScreen = () => {
   const [movies, setMovies] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -71,7 +72,7 @@ const HomeScreen = () => {
                 }}
               />
               <Card.Actions>
-                <Button>İncele</Button>
+                <Button onPress={() => inceleScreen(movie.title,"https://image.tmdb.org/t/p/w1280/" + movie.poster_path,movie.overview)}>İNCELE</Button>
                 {isSelected ? (
                   <Button onPress={() => remove(isSelected.id)}>
                     Bu film listenizde bulunmaktadır, silmek için tıklayınız
