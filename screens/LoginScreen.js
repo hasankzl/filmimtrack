@@ -31,11 +31,11 @@ const LoginScreen = () => {
   }, []);
   const handleSignUp = () => {
     if (email == "" || email.includes("@") == false) {
-      alert("lütfen geçerli bir email giriniz");
+      alert("kayıt olmak için lütfen geçerli bir email giriniz");
       return;
     }
     if (password == "") {
-      alert("lütfem bir şifre giriniz");
+      alert(" kayıt olmak için lütfem bir şifre giriniz");
       return;
     }
     if (password.length < 6) {
@@ -51,23 +51,33 @@ const LoginScreen = () => {
   };
 
   const handleLogin = () => {
+    if (email == "" || email.includes("@") == false) {
+      alert("giriş yapmak için lütfen geçerli bir email giriniz");
+      return;
+    }
+    if (password == "") {
+      alert(" giriş yapmak için lütfen bir şifre giriniz");
+      return;
+    }
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredentials) => {
         const user = userCredentials.user;
       })
-      .catch((error) => alert(error.message));
+      .catch((error) => alert("email veya şifre yanlış"));
   };
   return (
     <KeyboardAvoidingView style={styles.container}>
       <View style={styles.inputContainer}>
+        <Text style={styles.inputText}>Email</Text>
         <TextInput
-          placeholder="Email"
+          placeholder="Email giriniz"
           value={email}
           onChangeText={(text) => setEmail(text)}
           style={styles.input}
         />
+        <Text style={styles.inputText}>Şifre</Text>
         <TextInput
-          placeholder="Password"
+          placeholder="Şifre giriniz"
           value={password}
           onChangeText={(text) => setPassword(text)}
           style={styles.input}
@@ -77,13 +87,13 @@ const LoginScreen = () => {
 
       <View style={styles.buttonContainer}>
         <Button onPress={handleLogin} style={[styles.button]}>
-          <Text style={styles.buttonText}>Login</Text>
+          <Text style={styles.buttonText}>Giriş</Text>
         </Button>
         <Button
           onPress={handleSignUp}
           style={[styles.button, styles.buttonOutline]}
         >
-          <Text style={styles.buttonOutlineText}>Register</Text>
+          <Text style={styles.buttonOutlineText}>Kayıt</Text>
         </Button>
       </View>
     </KeyboardAvoidingView>
@@ -127,6 +137,12 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "700",
     fontSize: 16,
+  },
+  inputText: {
+    color: "#0782F9",
+    fontWeight: "800",
+    fontSize: 16,
+    padding: 10,
   },
   buttonOutlineText: {
     color: "#0782F9",
