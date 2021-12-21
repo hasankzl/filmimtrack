@@ -22,9 +22,11 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "backgroundColor": "#FFFFFF",
+		
       },
-      "package": "com.fintechprj.filmimtrack"
+      "package": "com.fintechprj.filmimtrack",
+	  "versionCode": 2
     },
     "web": {
       "favicon": "./assets/favicon.png"
