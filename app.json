@@ -4,7 +4,7 @@
     "slug": "filmimtrack",
     "version": "1.2.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/1024.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -20,11 +20,6 @@
       "supportsTablet": true
     },
     "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF",
-		
-      },
       "package": "com.fintechprj.filmimtrack",
 	  "versionCode": 2
     },
