@@ -30,11 +30,24 @@ const LoginScreen = () => {
     return unsubscribe;
   }, []);
   const handleSignUp = () => {
+    if (email == "" || email.includes("@") == false) {
+      alert("lütfen geçerli bir email giriniz");
+      return;
+    }
+    if (password == "") {
+      alert("lütfem bir şifre giriniz");
+      return;
+    }
+    if (password.length < 6) {
+      alert("şifre 6  karakter uzunluğunda olmalıdır");
+      return;
+    }
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredentials) => {
         const user = userCredentials.user;
+        alert("kayıt başarılı");
       })
-      .catch((error) => alert(error.message));
+      .catch((error) => console.log(error.message));
   };
 
   const handleLogin = () => {
